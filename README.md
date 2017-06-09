@@ -1,6 +1,6 @@
 # Deep-learning-with-cats
 
-I am trying to learn deep learning on a practical-level and this repository is for that purpose. I have a few subprobjects in mind, all having to do with cats.
+I am trying to learn deep learning on a practical level and this repository is for that purpose. I have a few subprojects in mind, all having to do with cats.
 
 **Using**
 * Pytorch
