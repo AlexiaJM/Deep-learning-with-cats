@@ -15,6 +15,6 @@ https://web.archive.org/web/20150703060412/http://137.189.35.203/WebUI/CatDataba
 
 **Objectives (so far)**
 * Generate images of cats using various types of Generative Adversarial Networks (GAN)
-* Starting with WGAN
-* When it will be possible to implement in Pytorch (not currently possible), try WGAN-IP
-* Then possibly trying BEGAN
+   * Starting with WGAN
+  * When it will be possible to implement in Pytorch (not currently possible), try WGAN-IP
+  * Then possibly trying BEGAN
