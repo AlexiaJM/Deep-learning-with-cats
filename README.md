@@ -8,7 +8,7 @@ I am trying to learn deep learning on a practical level and this repository is f
     * Basic implementation (Done)
     * Keeping log for TensorBoard (Done)
     * Automatic folder setup (Done)
-    * Tune hyperparameters (In progress)
+    * Tune hyperparameters and get it to converge! (In progress)
     * Tweak model structure (maybe LeakyReLU and dropouts in G)
     * Try soft and noisy labels as per https://github.com/soumith/ganhacks
     * Try adding decaying noise to input as per https://github.com/soumith/ganhacks
