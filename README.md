@@ -17,12 +17,6 @@ I am trying to learn deep learning on a practical level and this repository is f
   * When it will be possible to implement in Pytorch (not currently possible), try WGAN-IP
   * with BEGAN
 
-**Using**
-* Python 3.6
-* Pytorch
-* Ubuntu 16
-* Geforce 1060
-
 **Needed**
 
 * CUDA GPU
