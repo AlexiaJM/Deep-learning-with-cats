@@ -1,6 +1,6 @@
 # Deep-learning-with-cats
 
-I am trying to learn deep learning on a practical level and this repository is for that purpose. I have a few subprojects in mind, all having to do with cats. My first goal is learning to generate pictures of cats with Generative Adversarial Networks (^._.^). 
+This repository is a "toy" project so I can gain experience building deep neural networks. I have a few subprojects in mind, all having to do with cats. My first goal is learning to generate pictures of cats with Generative Adversarial Networks (^._.^). 
 
 **Objectives (so far)**
 * Generate images of cats using various types of Generative Adversarial Networks (GAN)
