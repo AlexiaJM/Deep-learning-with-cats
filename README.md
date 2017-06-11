@@ -4,7 +4,8 @@ I am trying to learn deep learning on a practical level and this repository is f
 
 **Objectives (so far)**
 * Generate images of cats using various types of Generative Adversarial Networks (GAN)
-  * with DCGAN (In Progress)
+  * Preprocess cat images as per original paper https://www.microsoft.com/en-us/research/wp-content/uploads/2008/10/ECCV_CAT_PROC.pdf so we get aligned cat faces for much better GAN convergence (*Priority to be done)
+  * use DCGAN (In Progress)
     * Basic implementation (Done)
     * Keeping log for TensorBoard (Done)
     * Automatic folder setup (Done)
@@ -13,9 +14,10 @@ I am trying to learn deep learning on a practical level and this repository is f
     * Try soft and noisy labels as per https://github.com/soumith/ganhacks
     * Try adding decaying noise to input as per https://github.com/soumith/ganhacks
     * Try different learning rates for G and D
-  * with WGAN
-  * When it will be possible to implement in Pytorch (not currently possible), try WGAN-IP
-  * with BEGAN
+    * Try skipping Discriminator learning every 2 iteration as per https://github.com/carpedm20/DCGAN-tensorflow
+  * use WGAN
+  * When it will be possible to implement in Pytorch (not currently possible), use WGAN-IP
+  * use BEGAN
 
 **Needed**
 
