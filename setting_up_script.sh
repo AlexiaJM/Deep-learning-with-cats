@@ -33,3 +33,6 @@ mv 00000003_015.jpg.cat cat_dataset/00000003_015.jpg.cat
 mkdir cat_dataset_output
 wget -nc https://raw.githubusercontent.com/AlexiaJM/Deep-learning-with-cats/master/preprocess_cat_dataset.py
 python preprocess_cat_dataset.py
+
+# Removing cat_dataset
+rm -r cat_dataset
