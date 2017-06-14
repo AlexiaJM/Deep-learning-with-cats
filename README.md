@@ -28,7 +28,7 @@ This repository is a "toy" project so I can gain experience building deep neural
 
 **To run**
 ```bash
-$ # Download dataset and preprocess cat picture (folder "cat_dataset_output" will now contain the cropped images)
+$ # Download dataset and preprocess cat picture (folder "cat_dataset_output" contains the cat faces)
 $ sh setting_up_script.sh
 $ # train GAN network
 $ python Meow_DCGAN.py --input_folder "your_input_folder" --output_folder "your_output_folder"
