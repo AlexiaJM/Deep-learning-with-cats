@@ -4,7 +4,7 @@ This repository is a "toy" project so I can gain experience building deep neural
 
 **Objectives (so far)**
 * Generate images of cats using various types of Generative Adversarial Networks (GAN)
-  * Preprocess cat images as per original paper https://www.microsoft.com/en-us/research/wp-content/uploads/2008/10/ECCV_CAT_PROC.pdf so we get aligned cat faces for much better GAN convergence (*Priority to be done)
+  * Preprocess cat images so we get aligned cat faces for much better GAN convergence (Done)
   * use DCGAN (In Progress)
     * Basic implementation (Done)
     * Keeping log for TensorBoard (Done)
@@ -28,5 +28,8 @@ This repository is a "toy" project so I can gain experience building deep neural
 
 **To run**
 ```bash
+$ # Download dataset and preprocess cat picture (folder "cat_dataset_output" will now contain the cropped images)
+$ sh setting_up_script.sh
+$ # train GAN network
 $ python Meow_DCGAN.py --input_folder "your_input_folder" --output_folder "your_output_folder"
 ```
