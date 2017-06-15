@@ -8,11 +8,11 @@ This repository is a "toy" project so I can gain experience building deep neural
 **Objectives (so far)**
 * Generate images of cats using various types of Generative Adversarial Networks (GAN)
   * Preprocess cat images so we get aligned cat faces for much better GAN convergence (Done)
-  * use DCGAN (In Progress)
+  * use DCGAN (Done)
     * Basic implementation (Done)
     * Keeping log for TensorBoard (Done)
     * Automatic folder setup (Done)
-    * Tune hyperparameters (In progress)
+    * Tune hyperparameters (Done)
     * Tweak model structure (maybe LeakyReLU and dropouts in G)
     * Try soft and noisy labels as per https://github.com/soumith/ganhacks
     * Try adding decaying noise to input as per https://github.com/soumith/ganhacks
