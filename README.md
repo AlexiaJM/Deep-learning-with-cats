@@ -2,7 +2,7 @@
 
 This repository is a "toy" project so I can gain experience building deep neural networks. I have a few subprojects in mind, all having to do with cats. My first goal is learning to generate pictures of cats with Generative Adversarial Networks (^._.^). 
 
-![DCGAN after >100 epochs](/images/DCGAN-106epoch.png)
+![DCGAN gif](DCGAN_220epochs.gif)
 ![DCGAN after >200 epochs](/images/DCGAN_209epoch.png)
 
 **Objectives (so far)**
@@ -10,18 +10,24 @@ This repository is a "toy" project so I can gain experience building deep neural
   * Preprocess cat images so we get aligned cat faces for much better GAN convergence (Done)
   * use DCGAN (Done)
     * Basic implementation (Done)
+    * Try adding a Stage-2 D and G as with https://arxiv.org/pdf/1612.03242.pdf to get high-res cat photos similar to http://mtyka.github.io/machine/learning/2017/06/06/highres-gan-faces.html
     * Keeping log for TensorBoard (Done)
     * Automatic folder setup (Done)
     * Tune hyperparameters (Done)
-    * Tweak model structure (maybe LeakyReLU and dropouts in G)
-    * Try soft and noisy labels as per https://github.com/soumith/ganhacks
-    * Try adding decaying noise to input as per https://github.com/soumith/ganhacks
-    * Try different learning rates for G and D
-    * Try skipping Discriminator learning every 2 iteration as per https://github.com/carpedm20/DCGAN-tensorflow
+    * Tweak model structure, maybe LeakyReLU and dropouts in G
   * use WGAN
   * When it will be possible to implement in Pytorch (not currently possible), use WGAN-IP
   * use BEGAN
-
+* Various/Others
+  * Try soft and noisy labels as per https://github.com/soumith/ganhacks
+  * Try adding decaying noise to input as per https://github.com/soumith/ganhacks
+  * Try different learning rates for G and D (Done, so far 1/4-1/5 of G for D works best)
+  * Try skipping Discriminator learning every 2 iteration as per https://github.com/carpedm20/DCGAN-tensorflow
+  * Add multi-gpu and non-CUDA option
+  * Fix loadings
+  * Add log to output
+  * Find a way to assess outliers in images and remove those if necessar (So far I only removed a few obvious outliers manually, I am not sure how to best asses image influence yet)
+  
 **Needed**
 
 * CUDA GPU
