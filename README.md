@@ -23,10 +23,12 @@ This repository is a "toy" project so I can gain experience building deep neural
   * Try adding decaying noise to input as per https://github.com/soumith/ganhacks
   * Try different learning rates for G and D (Done, so far 1/4-1/5 of G for D works best)
   * Try skipping Discriminator learning every 2 iteration as per https://github.com/carpedm20/DCGAN-tensorflow
-  * Add multi-gpu and non-CUDA option
-  * Fix loadings
-  * Add log to output
-  * Find a way to assess outliers in images and remove those if necessar (So far I only removed a few obvious outliers manually, I am not sure how to best asses image influence yet)
+  * Add multi-gpu and non-CUDA option (Done)
+  * Option to load previous models (Done)
+  * Add log to output (Done)
+  * Identify and remove outliers
+    * Remove obvious outliers manually (Done)
+    * Find outliers based on a certain measure
   
 **Needed**
 
@@ -41,4 +43,8 @@ $ # Download dataset and preprocess cat pictures (folder "cat_dataset_output" co
 $ sh setting_up_script.sh
 $ # train GAN network
 $ python Meow_DCGAN.py --input_folder "your_input_folder" --output_folder "your_output_folder"
+```
+**To see TensorBoard plots of the losses**
+```bash
+$ tensorboard --logdir "your_input_folder"
 ```
