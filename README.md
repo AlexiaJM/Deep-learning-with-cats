@@ -18,6 +18,7 @@ This repository is a "toy" project so I can gain experience building deep neural
   * When it will be possible to implement in Pytorch (not currently possible), use WGAN-IP
   * use BEGAN
 * Various/Others
+  * Try making higher resolutions pictures (Limited by 6gb of GPU RAM)
   * Try soft and noisy labels as per https://github.com/soumith/ganhacks
   * Try adding decaying noise to input as per https://github.com/soumith/ganhacks
   * Try different learning rates for G and D (Done, so far 1/4-1/5 of G for D works best)
