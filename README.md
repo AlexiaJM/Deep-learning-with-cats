@@ -10,7 +10,6 @@ This repository is a "toy" project so I can gain experience building deep neural
   * Preprocess cat images so we get aligned cat faces for much better GAN convergence (Done)
   * use DCGAN (Done)
     * Basic implementation (Done)
-    * Try adding a Stage-2 D and G as with https://arxiv.org/pdf/1612.03242.pdf to get high-res cat photos similar to http://mtyka.github.io/machine/learning/2017/06/06/highres-gan-faces.html
     * Keeping log for TensorBoard (Done)
     * Automatic folder setup (Done)
     * Tune hyperparameters (Done)
