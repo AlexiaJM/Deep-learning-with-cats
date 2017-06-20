@@ -10,25 +10,31 @@ This repository is a "toy" project so I can gain experience building deep neural
   * Preprocess cat images so we get aligned cat faces for much better GAN convergence (Done)
   * use DCGAN (Done)
     * Basic implementation (Done)
-    * Keeping log for TensorBoard (Done)
-    * Automatic folder setup (Done)
-    * Tune hyperparameters (Done)
-    * Tweak model structure, maybe LeakyReLU and dropouts in G
+    * Tune hyperparameters and tweak model structure to get it to converge (Done)
+    * Make working version for higher resolution (In the work)
   * use WGAN
-  * When it will be possible to implement in Pytorch (not currently possible), use WGAN-IP
+    * Basic implementation (Done)
+    * Tune hyperparameters and tweak model structure to get it to converge (In the work)
+    * Make working version for higher resolution
+  * use WGAN-IP
+    * Basic implementation (In the work)
+    * Tune hyperparameters and tweak model structure to get it to converge
+    * Make working version for higher resolution
   * use BEGAN
 * Various/Others
-  * Try making higher resolutions pictures (Limited by 6gb of GPU RAM)
-  * Try soft and noisy labels as per https://github.com/soumith/ganhacks
-  * Try adding decaying noise to input as per https://github.com/soumith/ganhacks
-  * Try different learning rates for G and D (Done, so far 1/4-1/5 of G for D works best)
-  * Try skipping Discriminator learning every 2 iteration as per https://github.com/carpedm20/DCGAN-tensorflow
+  * Keeping log for TensorBoard (Done)
+  * Automatic folder setup (Done)
   * Add multi-gpu and non-CUDA option (Done)
   * Option to load previous models (Done)
   * Add log to output (Done)
   * Identify and remove outliers
     * Remove obvious outliers manually (Done)
     * Find outliers based on a certain measure
+  * Tweak models structures, maybe LeakyReLU and dropouts in G
+  * Try making higher resolutions pictures (Limited by 6gb of GPU RAM)
+  * Try soft and noisy labels as per https://github.com/soumith/ganhacks
+  * Try adding decaying noise to input as per https://github.com/soumith/ganhacks
+  * Try skipping Discriminator learning every 2 iteration as per https://github.com/carpedm20/DCGAN-tensorflow
   
 **Needed**
 
