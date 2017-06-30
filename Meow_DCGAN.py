@@ -1,4 +1,4 @@
-# Reference 1 : https://github.com/pytorch/examples/blob/master/dcgan/main.py
+# Reference 1 : https://github.com/pytorch/examples/blob/master/dcgan
 # Reference 2 : https://arxiv.org/pdf/1511.06434.pdf
 # To get TensorBoard output, use the python command: tensorboard --logdir /home/alexia/Output/DCGAN
 
@@ -10,7 +10,8 @@ parser.add_argument('--image_size', type=int, default=64)
 parser.add_argument('--batch_size', type=int, default=64) # DCGAN paper original value used 128
 parser.add_argument('--n_colors', type=int, default=3)
 parser.add_argument('--z_size', type=int, default=100) # DCGAN paper original value
-parser.add_argument('--h_size', type=int, default=128) # DCGAN paper original value
+parser.add_argument('--G_h_size', type=int, default=128, help='Number of hidden nodes in the Generator. Too small leads to bad results, too big blows up the GPU RAM.') # DCGAN paper original value
+parser.add_argument('--D_h_size', type=int, default=128, help='Number of hidden nodes in the Discriminator. Too small leads to bad results, too big blows up the GPU RAM.') # DCGAN paper original value
 parser.add_argument('--lr_D', type=float, default=.00005, help='Discriminator learning rate') # 1/4 of DCGAN paper original value
 parser.add_argument('--lr_G', type=float, default=.0002, help='Generator learning rate') # DCGAN paper original value
 parser.add_argument('--n_epoch', type=int, default=250)
@@ -22,9 +23,14 @@ parser.add_argument('--G_load', default='', help='Full path to Generator model t
 parser.add_argument('--D_load', default='', help='Full path to Discriminator model to load (ex: /home/output_folder/run-5/models/D_epoch_11.pth)')
 parser.add_argument('--cuda', type=bool, default=True, help='enables cuda')
 parser.add_argument('--n_gpu', type=int, default=1, help='number of GPUs to use')
+parser.add_argument('--n_workers', type=int, default=2, help='Number of subprocess to use to load the data. Use at least 2 or the number of cpu cores - 1.')
 param = parser.parse_args()
 
 ## Imports
+
+# Time
+import time
+start = time.time()
 
 # Check folder run-i for all i=0,1,... until it finds run-j which does not exists, then creates a new folder run-j
 import os
@@ -55,9 +61,15 @@ import torchvision.transforms as transf
 import torchvision.models as models
 import torchvision.utils as vutils
 
+if param.cuda:
+	import torch.backends.cudnn as cudnn
+	cudnn.benchmark = True
+
 # To see images
 from IPython.display import Image
 to_img = transf.ToPILImage()
+
+import math
 
 ## Setting seed
 import random
@@ -83,36 +95,46 @@ trans = transf.Compose([
 data = dset.ImageFolder(root=param.input_folder, transform=trans)
 
 # Loading data in batch
-dataset = torch.utils.data.DataLoader(data, batch_size=param.batch_size, shuffle=True)
+dataset = torch.utils.data.DataLoader(data, batch_size=param.batch_size, shuffle=True, num_workers=param.n_workers)
 
 ## Models
+# The number of layers is implicitly determined by the image size
+# image_size = (4,8,16,32,64, 128, 256, 512, 1024) leads to n_layers = (1, 2, 3, 4, 5, 6, 7, 8, 9)
+# The more layers the bigger the neural get so it's best to decrease G_h_size and D_h_size when the image input is bigger
 
 # DCGAN generator
-class _G(torch.nn.Module):
+class DCGAN_G(torch.nn.Module):
 	def __init__(self):
-		super(_G, self).__init__()
-		self.main = torch.nn.Sequential(
-			# Z_size random numbers
-			torch.nn.ConvTranspose2d(param.z_size, param.h_size * 8, kernel_size=4, stride=1, padding=0, bias=False),
-			torch.nn.BatchNorm2d(param.h_size * 8),
-			torch.nn.ReLU(),
-			# Size = (H_size * 8) x 4 x 4
-			torch.nn.ConvTranspose2d(param.h_size * 8, param.h_size * 4, kernel_size=4, stride=2, padding=1, bias=False),
-			torch.nn.BatchNorm2d(param.h_size * 4),
-			torch.nn.ReLU(),
-			# Size = (H_size * 4) x 8 x 8
-			torch.nn.ConvTranspose2d(param.h_size * 4, param.h_size * 2, kernel_size=4, stride=2, padding=1, bias=False),
-			torch.nn.BatchNorm2d(param.h_size * 2),
-			torch.nn.ReLU(),
-			# Size = (H_size * 2) x 16 x 16
-			torch.nn.ConvTranspose2d(param.h_size * 2, param.h_size, kernel_size=4, stride=2, padding=1, bias=False),
-			torch.nn.BatchNorm2d(param.h_size),
-			torch.nn.ReLU(),
-			# Size = H_size x 32 x 32
-			torch.nn.ConvTranspose2d(param.h_size, param.n_colors, kernel_size=4, stride=2, padding=1, bias=False),
-			torch.nn.Tanh()
-			# Size = n_colors x 64 x 64
-		)
+		super(DCGAN_G, self).__init__()
+		main = torch.nn.Sequential()
+
+		# We need to know how many layers we will use at the beginning
+		mult = param.image_size // 8
+
+		### Start block
+		# Z_size random numbers
+		main.add_module('Start-ConvTranspose2d', torch.nn.ConvTranspose2d(param.z_size, param.G_h_size * mult, kernel_size=4, stride=1, padding=0, bias=False))
+		main.add_module('Start-BatchNorm2d', torch.nn.BatchNorm2d(param.G_h_size * mult))
+		main.add_module('Start-ReLU', torch.nn.ReLU())
+		# Size = (G_h_size * mult) x 4 x 4
+
+		### Middle block (Done until we reach ? x image_size/2 x image_size/2)
+		i = 1
+		while mult > 1:
+			main.add_module('Middle-ConvTranspose2d [%d]' % i, torch.nn.ConvTranspose2d(param.G_h_size * mult, param.G_h_size * (mult//2), kernel_size=4, stride=2, padding=1, bias=False))
+			main.add_module('Middle-BatchNorm2d [%d]' % i, torch.nn.BatchNorm2d(param.G_h_size * (mult//2)))
+			main.add_module('Middle-ReLU [%d]' % i, torch.nn.ReLU())
+			# Size = (G_h_size * (mult/(2*i))) x 8 x 8
+			mult = mult // 2
+			i += 1
+
+		### End block
+		# Size = G_h_size x image_size/2 x image_size/2
+		main.add_module('End-ConvTranspose2d', torch.nn.ConvTranspose2d(param.G_h_size, param.n_colors, kernel_size=4, stride=2, padding=1, bias=False))
+		main.add_module('End-Tanh', torch.nn.Tanh())
+		# Size = n_colors x image_size x image_size
+		self.main = main
+
 	def forward(self, input):
 		if isinstance(input.data, torch.cuda.FloatTensor) and param.n_gpu > 1:
 			output = torch.nn.parallel.data_parallel(self.main, input, range(param.n_gpu))
@@ -121,30 +143,37 @@ class _G(torch.nn.Module):
 		return output
 
 # DCGAN discriminator (using somewhat the reverse of the generator)
-class _D(torch.nn.Module):
+class DCGAN_D(torch.nn.Module):
 	def __init__(self):
-		super(_D, self).__init__()
-		self.main = torch.nn.Sequential(
-			# Size = n_colors x 64 x 64
-			torch.nn.Conv2d(param.n_colors, param.h_size, kernel_size=4, stride=2, padding=1, bias=False),
-			torch.nn.LeakyReLU(0.2, inplace=True),
-			# Size = H_size x 32 x 32
-			torch.nn.Conv2d(param.h_size, param.h_size * 2, kernel_size=4, stride=2, padding=1, bias=False),
-			torch.nn.BatchNorm2d(param.h_size * 2),
-			torch.nn.LeakyReLU(0.2, inplace=True),
-			# Size = (H_size * 2) x 16 x 16
-			torch.nn.Conv2d(param.h_size * 2, param.h_size * 4, kernel_size=4, stride=2, padding=1, bias=False),
-			torch.nn.BatchNorm2d(param.h_size * 4),
-			torch.nn.LeakyReLU(0.2, inplace=True),
-			# Size = (H_size * 4) x 8 x 8
-			torch.nn.Conv2d(param.h_size * 4, param.h_size * 8, kernel_size=4, stride=2, padding=1, bias=False),
-			torch.nn.BatchNorm2d(param.h_size * 8),
-			torch.nn.LeakyReLU(0.2, inplace=True),
-			# Size = (H_size * 8) x 4 x 4
-			torch.nn.Conv2d(param.h_size * 8, 1, kernel_size=4, stride=1, padding=0, bias=False),
-			torch.nn.Sigmoid()
-			# Size = 1 x 1 x 1 (Is a real cat or not?)
-		)
+		super(DCGAN_D, self).__init__()
+		main = torch.nn.Sequential()
+
+		### Start block
+		# Size = n_colors x image_size x image_size
+		main.add_module('Start-Conv2d', torch.nn.Conv2d(param.n_colors, param.D_h_size, kernel_size=4, stride=2, padding=1, bias=False))
+		main.add_module('Start-LeakyReLU', torch.nn.LeakyReLU(0.2, inplace=True))
+		image_size_new = param.image_size // 2
+		# Size = D_h_size x image_size/2 x image_size/2
+
+		### Middle block (Done until we reach ? x 4 x 4)
+		mult = 1
+		i = 0
+		while image_size_new > 4:
+			main.add_module('Middle-Conv2d [%d]' % i, torch.nn.Conv2d(param.D_h_size * mult, param.D_h_size * (2*mult), kernel_size=4, stride=2, padding=1, bias=False))
+			main.add_module('Middle-BatchNorm2d [%d]' % i, torch.nn.BatchNorm2d(param.D_h_size * (2*mult)))
+			main.add_module('Middle-LeakyReLU [%d]' % i, torch.nn.LeakyReLU(0.2, inplace=True))
+			# Size = (D_h_size*(2*i)) x image_size/(2*i) x image_size/(2*i)
+			image_size_new = image_size_new // 2
+			mult = mult*2
+			i += 1
+
+		### End block
+		# Size = (D_h_size * mult) x 4 x 4
+		main.add_module('End-Conv2d', torch.nn.Conv2d(param.D_h_size * mult, 1, kernel_size=4, stride=1, padding=0, bias=False))
+		main.add_module('End-Sigmoid', torch.nn.Sigmoid())
+		# Size = 1 x 1 x 1 (Is a real cat or not?)
+		self.main = main
+
 	def forward(self, input):
 		if isinstance(input.data, torch.cuda.FloatTensor) and param.n_gpu > 1:
 			output = torch.nn.parallel.data_parallel(self.main, input, range(param.n_gpu))
@@ -154,7 +183,6 @@ class _D(torch.nn.Module):
 		return output.view(-1, 1)
 
 ## Weights init function, DCGAN use 0.02 std
-
 def weights_init(m):
 	classname = m.__class__.__name__
 	if classname.find('Conv') != -1:
@@ -165,10 +193,9 @@ def weights_init(m):
 		# Estimated mean, must be around 0
 		m.bias.data.fill_(0)
 
-
 ## Initialization
-G = _G()
-D = _D()
+G = DCGAN_G()
+D = DCGAN_D()
 
 # Initialize weights
 G.apply(weights_init)
@@ -220,9 +247,12 @@ optimizerG = torch.optim.Adam(G.parameters(), lr=param.lr_G, betas=(param.beta1,
 ## Fitting model
 for epoch in range(param.n_epoch):
 	for i, data_batch in enumerate(dataset, 0):
-	############################
-		# (1) Update D network: maximize log(D(x)) + log(1 - D(G(z)))
-		###########################
+		########################
+		# (1) Update D network #
+		########################
+
+		for p in D.parameters():
+			p.requires_grad = True
 
 		# Train with real data
 		D.zero_grad()
@@ -254,9 +284,13 @@ for epoch in range(param.n_epoch):
 		errD = errD_real + errD_fake
 		optimizerD.step()
 
-		############################
-		# (2) Update G network: maximize log(D(G(z)))
-		###########################
+		########################
+		# (2) Update G network #
+		########################
+
+		# Make it a tiny bit faster
+		for p in D.parameters():
+			p.requires_grad = False
 
 		G.zero_grad()
 		# Generator wants to fool discriminator so it wants to minimize loss of discriminator assuming label is True
@@ -272,9 +306,10 @@ for epoch in range(param.n_epoch):
 		log_value('errD', errD.data[0], current_step)
 		log_value('errG', errG.data[0], current_step)
 
-		if i % 10 == 0:
-			print('[%d/%d][%d/%d] Loss_D: %.4f Loss_G: %.4f D(x): %.4f D(G(z)): %.4f / %.4f' % (epoch, param.n_epoch, i, len(dataset), errD.data[0], errG.data[0], D_real, D_fake, D_G))
-			print('[%d/%d][%d/%d] Loss_D: %.4f Loss_G: %.4f D(x): %.4f D(G(z)): %.4f / %.4f' % (epoch, param.n_epoch, i, len(dataset), errD.data[0], errG.data[0], D_real, D_fake, D_G), file=log_output)
+		if i % 50 == 0:
+			end = time.time()
+			print('[%d/%d][%d/%d] Loss_D: %.4f Loss_G: %.4f D(x): %.4f D(G(z)): %.4f / %.4f time:%.4f' % (epoch, param.n_epoch, i, len(dataset), errD.data[0], errG.data[0], D_real, D_fake, D_G, end - start))
+			print('[%d/%d][%d/%d] Loss_D: %.4f Loss_G: %.4f D(x): %.4f D(G(z)): %.4f / %.4f time:%.4f' % (epoch, param.n_epoch, i, len(dataset), errD.data[0], errG.data[0], D_real, D_fake, D_G, end - start), file=log_output)
 	# Fake images saved
 	fake_test = G(z_test)
 	vutils.save_image(fake_test.data, '%s/run-%d/images/fake_samples_epoch%03d.png' % (param.output_folder, run, epoch), normalize=True)
