@@ -3,25 +3,16 @@
 This repository is a "toy" project so I can gain experience building deep neural networks. I have a few subprojects in mind. My first goal is learning to generate pictures of cats with Generative Adversarial Networks (^._.^). 
 
 ![](/images/DCGAN_220epochs.gif)
-![](/images/DCGAN_209epoch.png)
 
 **Objectives (so far)**
 * Generate images of cats using various types of Generative Adversarial Networks (GAN)
-  * Preprocess cat images so we get aligned cat faces for much better GAN convergence (Done)
   * use DCGAN (Done)
-    * Basic implementation (Done)
-    * Tune hyperparameters and tweak model structure to get it to converge (Done)
-    * Make working version for higher resolution (In the work)
-  * use WGAN
-    * Basic implementation (Done)
-    * Tune hyperparameters and tweak model structure to get it to converge (In the work)
-    * Make working version for higher resolution
-  * use WGAN-IP
-    * Basic implementation (In the work)
-    * Tune hyperparameters and tweak model structure to get it to converge
-    * Make working version for higher resolution
+  * use WGAN (Done)
+  * use WGAN-IP (In progress)
   * use BEGAN
 * Various/Others
+  * Preprocess cat images so we get aligned cat faces for much better GAN convergence (Done)
+  * Fix DCGAN models so that they can adapt to different input image sizes (Done)
   * Keeping log for TensorBoard (Done)
   * Automatic folder setup (Done)
   * Add multi-gpu and non-CUDA option (Done)
@@ -32,9 +23,9 @@ This repository is a "toy" project so I can gain experience building deep neural
     * Find outliers based on a certain measure
   * Tweak models structures, maybe LeakyReLU and dropouts in G
   * Try making higher resolutions pictures (Limited by 6gb of GPU RAM)
+  * Try Self-Normalizing Neural Networks (SELU) as per https://arxiv.org/abs/1706.02515
   * Try soft and noisy labels as per https://github.com/soumith/ganhacks
   * Try adding decaying noise to input as per https://github.com/soumith/ganhacks
-  * Try skipping Discriminator learning every 2 iteration as per https://github.com/carpedm20/DCGAN-tensorflow
   
 **Needed**
 
@@ -54,3 +45,14 @@ $ python Meow_DCGAN.py --input_folder "your_input_folder" --output_folder "your_
 ```bash
 $ tensorboard --logdir "your_input_folder"
 ```
+
+# Results
+
+**DCGAN**
+
+It converges to very realistic pictures but a lot of tweaking is necessary. The learning rate of the Discriminator needs to be 4 times smaller than the Generator. No apparent mode collapse. Really cute pictures!
+
+![](/images/DCGAN_209epoch.png)
+
+**WGAN**
+
