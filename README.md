@@ -29,8 +29,7 @@ This repository is a "toy" project so I can gain experience building deep neural
   
 **Needed**
 
-* CUDA GPU
-* CUDA, CDNN, Python 3.6, PyTorch, Tensorflow (for TensorBoard)
+* Python 3.6, PyTorch, Tensorflow (for TensorBoard)
 * Cat Dataset (https://web.archive.org/web/20150703060412/http://137.189.35.203/WebUI/CatDatabase/catData.html)
 * TensorBoard logger (https://github.com/TeamHG-Memex/tensorboard_logger)
 
@@ -38,8 +37,10 @@ This repository is a "toy" project so I can gain experience building deep neural
 ```bash
 $ # Download dataset and preprocess cat pictures (folder "cat_dataset_output" contains the cat faces)
 $ sh setting_up_script.sh
-$ # train GAN network
+$ # Generate cats using DCGAN
 $ python Meow_DCGAN.py --input_folder "your_input_folder" --output_folder "your_output_folder"
+$ # Generate cats using WGAN
+$ python Meow_WGAN.py --input_folder "your_input_folder" --output_folder "your_output_folder"
 ```
 **To see TensorBoard plots of the losses**
 ```bash
