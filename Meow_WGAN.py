@@ -4,8 +4,6 @@
 # Reference 5 : https://github.com/martinarjovsky/WassersteinGAN
 # To get TensorBoard output, use the python command: tensorboard --logdir /home/alexia/Output/WGAN
 
-### Doesn't seem to converge yet :(
-
 ## Parameters
 
 import argparse
