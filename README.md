@@ -51,7 +51,7 @@ $ tensorboard --logdir "your_input_folder"
 
 **DCGAN**
 
-It converges to very realistic pictures in about 2-3 hours with only 209 epochs but some mild tweaking is necessary for proper convergence. The sweet spot is using .00005 for the Discriminator learning rate and .0002 for the Generator learning rate; this prevents the Discriminator from getting too good. There's no apparent mode collapse and we end up with really cute pictures!
+It converges to very realistic pictures in about 2-3 hours with only 209 epochs but some mild tweaking is necessary for proper convergence. With 64 x 64 images, the sweet spot is using .00005 for the Discriminator learning rate and .0002 for the Generator learning rate; this prevents the Discriminator from getting too good. There's no apparent mode collapse and we end up with really cute pictures!
 
 ![](/images/DCGAN_209epoch.png)
 
