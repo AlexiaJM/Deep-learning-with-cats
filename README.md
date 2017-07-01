@@ -6,10 +6,9 @@ This repository is a "toy" project so I can gain experience building deep neural
 
 **Objectives (so far)**
 * Generate images of cats using various types of Generative Adversarial Networks (GAN)
-  * use DCGAN (Done)
-  * use WGAN (Done)
-  * use WGAN-IP (In progress)
-  * use BEGAN
+  * use **DCGAN** (Done)
+  * use **WGAN** (Done)
+  * use **WGAN-IP** (In progress)
 * Various/Others
   * Preprocess cat images so we get aligned cat faces for much better GAN convergence (Done)
   * Fix DCGAN models so that they can adapt to different input image sizes (Done)
@@ -22,8 +21,9 @@ This repository is a "toy" project so I can gain experience building deep neural
     * Remove obvious outliers manually (Done)
     * Find outliers based on a certain measure
   * Tweak models structures, maybe LeakyReLU and dropouts in G
-  * Try making higher resolutions pictures (Limited by 6gb of GPU RAM)
-  * Try Self-Normalizing Neural Networks (SELU) as per https://arxiv.org/abs/1706.02515
+  * **Try making higher resolutions pictures** (Limited by 6gb of GPU RAM)
+  * **Try Self-Normalizing Neural Networks (SELU)** as per https://arxiv.org/abs/1706.02515
+  * Try adding Frechet Inception Distance (FID) as per https://arxiv.org/pdf/1706.08500.pdf
   * Try soft and noisy labels as per https://github.com/soumith/ganhacks
   * Try adding decaying noise to input as per https://github.com/soumith/ganhacks
   
@@ -59,8 +59,10 @@ It converges to very realistic pictures in about 2-3 hours with only 209 epochs 
 
 It converges but very slowly (took 4-5h, 600+ epochs) and only when using 64 hidden nodes. I could not make the generator converge with 128 hidden nodes. With DCGAN, you have to tweak the learning rates a lot but you are able to see quickly if it's not going to converge (If Loss of D goes to 0 or if loss of G goes to 0 at the start) but with WGAN, you need to let it run for many epochs before you can tell. 
 
-Visually, there is some pretty striking mode collapse here; many cats have heterochromia, one eye closed and one eye open or a weird nose. Overall the results are not as impressive as with DCGAN but then it could be because the neural networks are less complex so this might not be a fair comparison. 
+Visually, there is some pretty striking mode collapse here; many cats have heterochromia, one eye closed and one eye open or a weird nose. Overall the results are not as impressive as with DCGAN but then it could be because the neural networks are less complex so this might not be a fair comparison.
 
-This needs to be attempted again with WGAN-improved because these convergence issues could likely be due to the weight clipping. In the paper on improving WGAN by Gulrajani et al. (2017), they were able to train a 101 layers neural network to produce pictures! So I doubt that training a cat generator with 5 layers and 128 hidden nodes would be much of a problem. So far though, WGAN is disapointing.
+This needs to be attempted again with WGAN-GP because these convergence issues could likely be due to the weight clipping. In the paper on improving WGAN by Gulrajani et al. (2017), they were able to train a 101 layers neural network to produce pictures! So I doubt that training a cat generator with 5 layers and 128 hidden nodes would be much of a problem. So far though, WGAN is disapointing.
+
+From reading the paper "GANs Trained by a Two Time-Scale Update Rule Converge to a Nash Equilibrium" by Heusel et al. (2017), it seems that the Adam optimiser has some properties which make mode collapse much less likely and it lower the chance of getting stuck into a bad local optimum. This is likely contributing to the problem with WGAN which doesn't use Adam; considering that WGAN-GP use Adam, it is much more likely to give good results like DCGAN.
 
 ![](/images/WGAN_1408epoch.png)
