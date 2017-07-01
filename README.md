@@ -51,9 +51,12 @@ $ tensorboard --logdir "your_input_folder"
 
 **DCGAN**
 
-It converges to very realistic pictures but a lot of tweaking is necessary. The learning rate of the Discriminator needs to be 4 times smaller than the Generator. No apparent mode collapse. Really cute pictures!
+It converges to very realistic pictures in about 2-3 hours with only 209 epochs but some mild tweaking is necessary for proper convergence. The sweet spot is using .00005 for the Discriminator learning rate and .0002 for the Generator learning rate; this prevents the Discriminator from getting too good. There's no apparent mode collapse and we end up with really cute pictures!
 
 ![](/images/DCGAN_209epoch.png)
 
 **WGAN**
 
+It converges but very slowly (took 4-5h, 600+ epochs) and only when using 64 hidden nodes. I could not make the generator converge with 128 hidden nodes. There is some pretty striking mode collapse here, many cats have heterochromia, one eye closed and one eye open or a weird nose. Overall the results are not as impressive as with DCGAN but then it could be because the neural networks are less complex so this might not be a fair comparison. This needs to be attempted again with WGAN-improved because these convergence issues could likely be due to the weight clipping. In the paper on improving WGAN by Gulrajani et al. (2017), they were able to train a 101 layers neural network to produce pictures! So I doubt that training a cat generator with 5 layers and 128 hidden nodes would be much of a problem. So far though, WGAN is disapointing.
+
+![](/images/DCGAN_209epoch.png)
