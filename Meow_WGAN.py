@@ -12,8 +12,8 @@ parser.add_argument('--image_size', type=int, default=64)
 parser.add_argument('--batch_size', type=int, default=64)
 parser.add_argument('--n_colors', type=int, default=3)
 parser.add_argument('--z_size', type=int, default=100) # DCGAN paper original value
-parser.add_argument('--G_h_size', type=int, default=128, help='Number of hidden nodes in the Generator. Too small leads to bad results, too big blows up the GPU RAM.') # DCGAN paper original value
-parser.add_argument('--D_h_size', type=int, default=128, help='Number of hidden nodes in the Discriminator. Too small leads to bad results, too big blows up the GPU RAM.') # DCGAN paper original value
+parser.add_argument('--G_h_size', type=int, default=64, help='Number of hidden nodes in the Generator. Too small leads to bad results, too big blows up the GPU RAM.') # DCGAN paper original value
+parser.add_argument('--D_h_size', type=int, default=64, help='Number of hidden nodes in the Discriminator. Too small leads to bad results, too big blows up the GPU RAM.') # DCGAN paper original value
 parser.add_argument('--lr_D', type=float, default=.00005, help='Discriminator learning rate') # WGAN original value
 parser.add_argument('--lr_G', type=float, default=.00005, help='Generator learning rate')
 parser.add_argument('--n_epoch', type=int, default=500000)
