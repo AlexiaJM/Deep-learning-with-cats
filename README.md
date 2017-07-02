@@ -40,12 +40,12 @@ $ # Download dataset and preprocess cat pictures
 $ # Create two folders, one for cats bigger than 64x64 and one for cats bigger than 128x128
 $ sh setting_up_script.sh
 $ # Move to your favorite place
-$ mv cats_bigger_than_64x64 your_input_folder
-$ mv cats_bigger_than_128x128 your_input_folder
+$ mv cats_bigger_than_64x64 "your_input_folder_64x64"
+$ mv cats_bigger_than_128x128 "your_input_folder_128x128"
 $ # Generate 64x64 cats using DCGAN
-$ python Meow_DCGAN.py --input_folder your_input_folder/cats_bigger_than_64x64 --output_folder your_output_folder
+$ python Meow_DCGAN.py --input_folder "your_input_folder_64x64" --output_folder "your_output_folder"
 $ # Generate 64x64 cats using WGAN
-$ python Meow_WGAN.py --input_folder your_input_folder/cats_bigger_than_64x64 --output_folder your_output_folder
+$ python Meow_WGAN.py --input_folder "your_input_folder_64x64" --output_folder "your_output_folder"
 ```
 **To see TensorBoard plots of the losses**
 ```bash
