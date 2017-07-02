@@ -46,6 +46,8 @@ $ mv cats_bigger_than_64x64 "your_input_folder_64x64"
 $ mv cats_bigger_than_128x128 "your_input_folder_128x128"
 $ # Generate 64x64 cats using DCGAN
 $ python Meow_DCGAN.py --input_folder "your_input_folder_64x64" --output_folder "your_output_folder"
+$ # Generate 128x128 cats using DCGAN
+$ ppython Meow_DCGAN_SELU.py --input_folder="your_input_folder_128x128" --image_size 128 --G_h_size 64 --D_h_size 64
 $ # Generate 64x64 cats using WGAN
 $ python Meow_WGAN.py --input_folder "your_input_folder_64x64" --output_folder "your_output_folder"
 ```
@@ -64,7 +66,7 @@ It converges to very realistic pictures in about 2-3 hours with only 209 epochs 
 
 **High Resolution DCGAN and SELU**
 
-All my initial attempts at generating cats in 128 x 128 with DCGAN failed. However, simply by replacing the batch normalizations and ReLU by SELU, I was able to get slow but steady convergence with the same learning rate as with the lower resolution DCGAN! SELUs are self-normalizing (see Klambauer et al.(2017)) and thus remove the need of batch normalization which make the GANs much more stable. It very fascinating as SELU are extremely new (one month old) so no research has been done on SELU and GANs but from what I observed, they seem to greatly increase GANs stability.
+All my initial attempts at generating cats in 128 x 128 with DCGAN failed. However, simply by replacing the batch normalizations and ReLUs by SELUs, I was able to get slow but steady convergence with the same learning rate as with the lower resolution DCGAN! SELUs are self-normalizing (see Klambauer et al.(2017)) and thus remove the need of batch normalization. It very fascinating as SELUs are extremely new (one month old) so no research has been done on SELUs and GANs but from what I observed, they seem to greatly increase GANs stability.
 
 **WGAN**
 
