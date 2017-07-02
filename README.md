@@ -11,6 +11,7 @@ This repository is a "toy" project so I can gain experience building deep neural
   * use **WGAN-IP** (In progress)
 * Various/Others
   * Preprocess cat images so we get aligned cat faces for much better GAN convergence (Done)
+  * Separate cats by size to be better able to generate cats of certain sizes (Done)
   * Fix DCGAN models so that they can adapt to different input image sizes (Done)
   * Keeping log for TensorBoard (Done)
   * Automatic folder setup (Done)
@@ -35,12 +36,16 @@ This repository is a "toy" project so I can gain experience building deep neural
 
 **To run**
 ```bash
-$ # Download dataset and preprocess cat pictures (folder "cat_dataset_output" contains the cat faces)
+$ # Download dataset and preprocess cat pictures 
+$ # Create two folders, one for cats bigger than 64x64 and one for cats bigger than 128x128
 $ sh setting_up_script.sh
-$ # Generate cats using DCGAN
-$ python Meow_DCGAN.py --input_folder "your_input_folder" --output_folder "your_output_folder"
-$ # Generate cats using WGAN
-$ python Meow_WGAN.py --input_folder "your_input_folder" --output_folder "your_output_folder"
+$ # Move to your favorite place
+$ mv cats_bigger_than_64x64 your_input_folder
+$ mv cats_bigger_than_128x128 your_input_folder
+$ # Generate 64x64 cats using DCGAN
+$ python Meow_DCGAN.py --input_folder your_input_folder/cats_bigger_than_64x64 --output_folder your_output_folder
+$ # Generate 64x64 cats using WGAN
+$ python Meow_WGAN.py --input_folder your_input_folder/cats_bigger_than_64x64 --output_folder your_output_folder
 ```
 **To see TensorBoard plots of the losses**
 ```bash
