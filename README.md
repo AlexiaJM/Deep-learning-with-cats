@@ -47,7 +47,7 @@ $ mv cats_bigger_than_128x128 "your_input_folder_128x128"
 $ # Generate 64x64 cats using DCGAN
 $ python Meow_DCGAN.py --input_folder "your_input_folder_64x64" --output_folder "your_output_folder"
 $ # Generate 128x128 cats using DCGAN
-$ ppython Meow_DCGAN_SELU.py --input_folder="your_input_folder_128x128" --image_size 128 --G_h_size 64 --D_h_size 64
+$ python Meow_DCGAN.py --input_folder="your_input_folder_128x128" --image_size 128 --G_h_size 64 --D_h_size 64 --SELU True
 $ # Generate 64x64 cats using WGAN
 $ python Meow_WGAN.py --input_folder "your_input_folder_64x64" --output_folder "your_output_folder"
 ```
