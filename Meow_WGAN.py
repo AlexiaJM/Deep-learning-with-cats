@@ -20,7 +20,7 @@ parser.add_argument('--n_epoch', type=int, default=500000)
 parser.add_argument('--n_critic', type=int, default=5, help='Number of training with D before training G') # WGAN original value
 parser.add_argument('--clip', type=float, default=.01, help='Clipping value') # WGAN original value
 parser.add_argument('--seed', type=int)
-parser.add_argument('--input_folder', default='/home/alexia/Datasets/Meow/cats_bigger_than_64x64', help='input folder, do not finish with a /')
+parser.add_argument('--input_folder', default='/home/alexia/Datasets/Meow_64x64/', help='input folder, do not finish with a /')
 parser.add_argument('--output_folder', default='/home/alexia/Output/WGAN', help='output folder, do not finish with a /')
 parser.add_argument('--G_load', default='', help='Full path to Generator model to load (ex: /home/output_folder/run-5/models/G_epoch_11.pth)')
 parser.add_argument('--D_load', default='', help='Full path to Discriminator model to load (ex: /home/output_folder/run-5/models/D_epoch_11.pth)')
