@@ -23,7 +23,9 @@ This repository is a "toy" project so I can gain experience building deep neural
     * Find outliers based on a certain measure
   * Tweak models structures, maybe LeakyReLU and dropouts in G
   * **Try making higher resolutions pictures** (Limited by 6gb of GPU RAM)
-  * **Try Self-Normalizing Neural Networks (SELU)** as per https://arxiv.org/abs/1706.02515
+    * 128 x 128 (Done)
+    * 256 x 256 
+  * **Try Self-Normalizing Neural Networks (SELU)** as per https://arxiv.org/abs/1706.02515 (Done)
   * Try adding Frechet Inception Distance (FID) as per https://arxiv.org/pdf/1706.08500.pdf
   * Try soft and noisy labels as per https://github.com/soumith/ganhacks
   * Try adding decaying noise to input as per https://github.com/soumith/ganhacks
@@ -58,9 +60,11 @@ $ tensorboard --logdir "your_input_folder"
 
 It converges to very realistic pictures in about 2-3 hours with only 209 epochs but some mild tweaking is necessary for proper convergence. You must choose separate learning rates for D and G so that neither G or D become way better than the other, it's a very careful balance but once you got it, you're set for convergence! With 64 x 64 images, the sweet spot is using .00005 for the Discriminator learning rate and .0002 for the Generator learning rate. There's no apparent mode collapse and we end up with really cute pictures!
 
-All my attempts at generating pictures in 128 x 128 with DCGAN have failed. It probably would require some more tricks like shown here : https://github.com/soumith/ganhacks.
-
 ![](/images/DCGAN_209epoch.png)
+
+**High Resolution DCGAN and SELU**
+
+All my initial attempts at generating cats in 128 x 128 with DCGAN failed. However, simply by replacing the batch normalizations and ReLU by SELU, I was able to get slow but steady convergence with the same learning rate as with the lower resolution DCGAN! SELUs are self-normalizing (see Klambauer et al.(2017)) and thus remove the need of batch normalization which make the GANs much more stable. It very fascinating as SELU are extremely new (one month old) so no research has been done on SELU and GANs but from what I observed, they seem to greatly increase GANs stability.
 
 **WGAN**
 
