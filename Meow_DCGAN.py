@@ -16,6 +16,7 @@ parser.add_argument('--lr_D', type=float, default=.00005, help='Discriminator le
 parser.add_argument('--lr_G', type=float, default=.0002, help='Generator learning rate') # DCGAN paper original value
 parser.add_argument('--n_epoch', type=int, default=1000)
 parser.add_argument('--beta1', type=float, default=0.5, help='Adam betas[0], DCGAN paper recommends .50 instead of the usual .90')
+parser.add_argument('--SELU', type=bool, default=False, help='Using scaled exponential linear units (SELU) which are self-normalizing instea of ReLU with BatchNorm. This improves stability.')
 parser.add_argument('--seed', type=int)
 parser.add_argument('--input_folder', default='/home/alexia/Datasets/Meow_64x64/', help='input folder, do not finish with a /')
 parser.add_argument('--output_folder', default='/home/alexia/Output/DCGAN', help='output folder, do not finish with a /')
@@ -114,16 +115,22 @@ class DCGAN_G(torch.nn.Module):
 		### Start block
 		# Z_size random numbers
 		main.add_module('Start-ConvTranspose2d', torch.nn.ConvTranspose2d(param.z_size, param.G_h_size * mult, kernel_size=4, stride=1, padding=0, bias=False))
-		main.add_module('Start-BatchNorm2d', torch.nn.BatchNorm2d(param.G_h_size * mult))
-		main.add_module('Start-ReLU', torch.nn.ReLU())
+		if param.SELU:
+			main.add_module('Start-SELU', torch.nn.SELU(inplace=True))
+		else:
+			main.add_module('Start-BatchNorm2d', torch.nn.BatchNorm2d(param.G_h_size * mult))
+			main.add_module('Start-ReLU', torch.nn.ReLU())
 		# Size = (G_h_size * mult) x 4 x 4
 
 		### Middle block (Done until we reach ? x image_size/2 x image_size/2)
 		i = 1
 		while mult > 1:
 			main.add_module('Middle-ConvTranspose2d [%d]' % i, torch.nn.ConvTranspose2d(param.G_h_size * mult, param.G_h_size * (mult//2), kernel_size=4, stride=2, padding=1, bias=False))
-			main.add_module('Middle-BatchNorm2d [%d]' % i, torch.nn.BatchNorm2d(param.G_h_size * (mult//2)))
-			main.add_module('Middle-ReLU [%d]' % i, torch.nn.ReLU())
+			if param.SELU:
+				main.add_module('Middle-SELU [%d]' % i, torch.nn.SELU(inplace=True))
+			else:
+				main.add_module('Middle-BatchNorm2d [%d]' % i, torch.nn.BatchNorm2d(param.G_h_size * (mult//2)))
+				main.add_module('Middle-ReLU [%d]' % i, torch.nn.ReLU())
 			# Size = (G_h_size * (mult/(2*i))) x 8 x 8
 			mult = mult // 2
 			i += 1
@@ -151,7 +158,10 @@ class DCGAN_D(torch.nn.Module):
 		### Start block
 		# Size = n_colors x image_size x image_size
 		main.add_module('Start-Conv2d', torch.nn.Conv2d(param.n_colors, param.D_h_size, kernel_size=4, stride=2, padding=1, bias=False))
-		main.add_module('Start-LeakyReLU', torch.nn.LeakyReLU(0.2, inplace=True))
+		if param.SELU:
+			main.add_module('Start-SELU', torch.nn.SELU(inplace=True))
+		else:
+			main.add_module('Start-LeakyReLU', torch.nn.LeakyReLU(0.2, inplace=True))
 		image_size_new = param.image_size // 2
 		# Size = D_h_size x image_size/2 x image_size/2
 
@@ -160,8 +170,11 @@ class DCGAN_D(torch.nn.Module):
 		i = 0
 		while image_size_new > 4:
 			main.add_module('Middle-Conv2d [%d]' % i, torch.nn.Conv2d(param.D_h_size * mult, param.D_h_size * (2*mult), kernel_size=4, stride=2, padding=1, bias=False))
-			main.add_module('Middle-BatchNorm2d [%d]' % i, torch.nn.BatchNorm2d(param.D_h_size * (2*mult)))
-			main.add_module('Middle-LeakyReLU [%d]' % i, torch.nn.LeakyReLU(0.2, inplace=True))
+			if param.SELU:
+				main.add_module('Middle-SELU [%d]' % i, torch.nn.SELU(inplace=True))
+			else:
+				main.add_module('Middle-BatchNorm2d [%d]' % i, torch.nn.BatchNorm2d(param.D_h_size * (2*mult)))
+				main.add_module('Middle-LeakyReLU [%d]' % i, torch.nn.LeakyReLU(0.2, inplace=True))
 			# Size = (D_h_size*(2*i)) x image_size/(2*i) x image_size/(2*i)
 			image_size_new = image_size_new // 2
 			mult = mult*2
@@ -180,7 +193,7 @@ class DCGAN_D(torch.nn.Module):
 		else:
 			output = self.main(input)
 		# Convert from 1 x 1 x 1 to 1 so that we can compare to given label (cat or not?)
-		return output.view(-1, 1)
+		return output.view(-1)
 
 ## Weights init function, DCGAN use 0.02 std
 def weights_init(m):
@@ -297,7 +310,7 @@ for epoch in range(param.n_epoch):
 		y.data.resize_(current_batch_size).fill_(1)
 		y_pred_fake = D(x_fake)
 		errG = criterion(y_pred_fake, y)
-		errG.backward(retain_variables=True)
+		errG.backward(retain_graph=True)
 		D_G = y_pred_fake.data.mean()
 		optimizerG.step()
 
