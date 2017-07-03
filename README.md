@@ -8,7 +8,7 @@ This repository is a "toy" project so I can gain experience building deep neural
 * Generate images of cats using various types of Generative Adversarial Networks (GAN)
   * use **DCGAN** (Done)
   * use **WGAN** (Done)
-  * use **WGAN-IP** (In progress)
+  * use **WGAN-GP** (In progress)
 * Various/Others
   * Preprocess cat images so we get aligned cat faces for much better GAN convergence (Done)
   * Separate cats by size to be better able to generate cats of certain sizes (Done)
