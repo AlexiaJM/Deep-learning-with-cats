@@ -66,7 +66,7 @@ It converges to very realistic pictures in about 2-3 hours with only 209 epochs 
 
 **High Resolution DCGAN and SELU**
 
-All my initial attempts at generating cats in 128 x 128 with DCGAN failed. However, simply by replacing the batch normalizations and ReLUs with SELUs, I was able to get slow (6+ hours) but steady convergence with the same learning rates as before. SELUs are self-normalizing (see Klambauer et al.(2017)) and thus remove the need of batch normalization. It is very fascinating as SELUs are extremely new (one month old) so no research has been done on SELUs and GANs but from what I observed, they seem to greatly increase GANs stability.
+All my initial attempts at generating cats in 128 x 128 with DCGAN failed. However, simply by replacing the batch normalizations and ReLUs with SELUs, I was able to get slow (6+ hours) but steady convergence with the same learning rates as before. SELUs are self-normalizing (see Klambauer et al.(2017)) and thus remove the need of batch normalization. It is very fascinating as SELUs are extremely new (one month old) so no research has been done on SELUs and GANs but from what I observed, they seem to greatly increase GANs stability. The cats are not as good looking as the previous ones and there is a noticeable lack of variety (lots of black cats with similar faces). This is mostly explained by the fact that the sample size is N=6445 rather than N=9304 (I only trained the models on images bigger than 128x128). Still, some cats are pretty good looking and they are in higher resolution than before so I still consider this a success!
 
 ![](/images/DCGAN_SELU_128x128_epoch605.png)
 
