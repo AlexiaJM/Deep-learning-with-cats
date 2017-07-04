@@ -8,7 +8,7 @@ This repository is a "toy" project so I can gain experience building deep neural
 * Generate images of cats using various types of Generative Adversarial Networks (GAN)
   * use **DCGAN** (Done)
   * use **WGAN** (Done)
-  * use **WGAN-GP** (In progress)
+  * use **WGAN-GP** (Done)
 * Various/Others
   * Preprocess cat images so we get aligned cat faces for much better GAN convergence (Done)
   * Separate cats by size to be better able to generate cats of certain sizes (Done)
@@ -50,6 +50,8 @@ $ # Generate 128x128 cats using DCGAN
 $ python Meow_DCGAN.py --input_folder="your_input_folder_128x128" --image_size 128 --G_h_size 64 --D_h_size 64 --SELU True
 $ # Generate 64x64 cats using WGAN
 $ python Meow_WGAN.py --input_folder "your_input_folder_64x64" --output_folder "your_output_folder"
+$ # Generate 64x64 cats using WGAN-GP
+$ python Meow_WGAN-GP.py --input_folder "your_input_folder_64x64" --output_folder "your_output_folder" --SELU True
 ```
 **To see TensorBoard plots of the losses**
 ```bash
