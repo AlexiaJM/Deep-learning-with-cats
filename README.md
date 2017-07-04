@@ -62,6 +62,11 @@ $ tensorboard --logdir "your_input_folder"
 
 Discussion of the results at https://ajolicoeur.wordpress.com/cats.
 
+**DCGAN 64x64**
 ![](/images/DCGAN_209epoch.png)
+**DCGAN 128x128 with SELU**
 ![](/images/DCGAN_SELU_128x128_epoch605.png)
+**WGAN 64x64**
 ![](/images/WGAN_1408epoch.png)
+**WGAN-GP 64x64 with SELU**
+![](/images/WGAN_GP_iter15195.png)
