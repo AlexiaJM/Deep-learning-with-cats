@@ -12,8 +12,8 @@ parser.add_argument('--n_colors', type=int, default=3)
 parser.add_argument('--z_size', type=int, default=100) # DCGAN paper original value
 parser.add_argument('--G_h_size', type=int, default=128, help='Number of hidden nodes in the Generator. Too small leads to bad results, too big blows up the GPU RAM.') # DCGAN paper original value
 parser.add_argument('--D_h_size', type=int, default=128, help='Number of hidden nodes in the Discriminator. Too small leads to bad results, too big blows up the GPU RAM.') # DCGAN paper original value
-parser.add_argument('--lr_D', type=float, default=.00005, help='Discriminator learning rate') # 1/4 of DCGAN paper original value
-parser.add_argument('--lr_G', type=float, default=.0002, help='Generator learning rate') # DCGAN paper original value
+parser.add_argument('--lr_D', type=float, default=.0001, help='Discriminator learning rate') # 1/4 of DCGAN paper original value
+parser.add_argument('--lr_G', type=float, default=.0001, help='Generator learning rate') # DCGAN paper original value
 parser.add_argument('--n_epoch', type=int, default=1000)
 parser.add_argument('--beta1', type=float, default=0.5, help='Adam betas[0], DCGAN paper recommends .50 instead of the usual .90')
 parser.add_argument('--a', type=bool, default=0, help='In Discriminator loss: 1/2*E[(D(x_real)-b)^2]+1/2*E[(D(x_fake-a)^2]') # LSGAN paper original value
