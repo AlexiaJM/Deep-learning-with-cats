@@ -60,7 +60,7 @@ $ tensorboard --logdir "your_input_folder"
 
 # Results
 
-Discussion of the results at https://ajolicoeur.wordpress.com/cats.
+**Discussion of the results at https://ajolicoeur.wordpress.com/cats.**
 
 **DCGAN 64x64**
 
