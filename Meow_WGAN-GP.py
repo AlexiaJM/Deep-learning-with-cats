@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Reference 1 : https://github.com/pytorch/examples
 # Reference 3 : https://arxiv.org/pdf/1511.06434.pdf
 # Reference 4 : https://arxiv.org/pdf/1701.07875.pdf
