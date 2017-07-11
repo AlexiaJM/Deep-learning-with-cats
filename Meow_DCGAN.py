@@ -36,15 +36,17 @@ start = time.time()
 # Check folder run-i for all i=0,1,... until it finds run-j which does not exists, then creates a new folder run-j
 import os
 run = 0
-while os.path.exists("%s/run-%d" % (param.output_folder, run)):
+base_dir = f"{param.output_folder}/run-{run}"
+while os.path.exists(base_dir):
 	run += 1
-os.mkdir("%s/run-%d" % (param.output_folder, run))
-os.mkdir("%s/run-%d/logs" % (param.output_folder, run))
-os.mkdir("%s/run-%d/images" % (param.output_folder, run))
-os.mkdir("%s/run-%d/models" % (param.output_folder, run))
+	base_dir = f"{param.output_folder}/run-{run}"
+os.mkdir(base_dir)
+os.mkdir(f"{base_dir}/logs"))
+os.mkdir(f"{base_dir}/images"))
+os.mkdir(f"{base_dir}/models"))
 
 # where we save the output
-log_output = open("%s/run-%d/logs/log.txt" % (param.output_folder, run), 'w')
+log_output = open(f"{base_dir}/logs/log.txt", 'w')
 print(param)
 print(param, file=log_output)
 
@@ -54,7 +56,7 @@ from torch.autograd import Variable
 
 # For plotting the Loss of D and G using tensorboard
 from tensorboard_logger import configure, log_value
-configure("%s/run-%d/logs" % (param.output_folder, run), flush_secs=5)
+configure(f"{base_dir}/logs", flush_secs=5)
 
 import torchvision
 import torchvision.datasets as dset
@@ -74,10 +76,9 @@ import math
 
 ## Setting seed
 import random
-if param.seed is None:
-	param.seed = random.randint(1, 10000)
-print("Random Seed: ", param.seed)
-print("Random Seed: ", param.seed, file=log_output)
+param.seed = param.seed or random.randint(1, 10000)
+print(f"Random Seed: {param.seed}")
+print(f"Random Seed: {param.seed}", file=log_output)
 random.seed(param.seed)
 torch.manual_seed(param.seed)
 if param.cuda:
@@ -177,7 +178,7 @@ class DCGAN_D(torch.nn.Module):
 				main.add_module('Middle-LeakyReLU [%d]' % i, torch.nn.LeakyReLU(0.2, inplace=True))
 			# Size = (D_h_size*(2*i)) x image_size/(2*i) x image_size/(2*i)
 			image_size_new = image_size_new // 2
-			mult = mult*2
+			mult *= 2
 			i += 1
 
 		### End block
