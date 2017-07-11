@@ -10,6 +10,8 @@ This repository is a "toy" project so I can gain experience building deep neural
   * use **WGAN** (Done)
   * use **WGAN-GP** (Done)
   * use **LSGAN** (Done)
+  * use **BEGAN**
+* Transform real cats into art pieces using **CycleGAN**
 * Various/Others
   * Preprocess cat images so we get aligned cat faces for much better GAN convergence (Done)
   * Separate cats by size to be better able to generate cats of certain sizes (Done)
@@ -19,17 +21,17 @@ This repository is a "toy" project so I can gain experience building deep neural
   * Add multi-gpu and non-CUDA option (Done)
   * Option to load previous models (Done)
   * Add log to output (Done)
-  * Identify and remove outliers
-    * Remove obvious outliers manually (Done)
-    * Find outliers based on a certain measure
-  * Tweak models structures, maybe LeakyReLU and dropouts in G
-  * **Try making higher resolutions pictures** (Limited by 6gb of GPU RAM)
+  * Dropouts in G
+  * L2 Regularization (Done)
+  * Try making higher resolutions pictures
     * 128 x 128 (Done)
     * 256 x 256 
-  * **Try Self-Normalizing Neural Networks (SELU)** as per https://arxiv.org/abs/1706.02515 (Done)
+  * Try Self-Normalizing Neural Networks (SELU) as per https://arxiv.org/abs/1706.02515 (Done)
   * Try adding Frechet Inception Distance (FID) as per https://arxiv.org/pdf/1706.08500.pdf
   * Try soft and noisy labels as per https://github.com/soumith/ganhacks
   * Try adding decaying noise to input as per https://github.com/soumith/ganhacks
+  * Add option to generate more cat pictures
+  * Add option to see the 5 nearest real cats images and thus be able to tell if the generated cats are really unique
   
 **Needed**
 
