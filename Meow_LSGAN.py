@@ -30,6 +30,7 @@ parser.add_argument('--D_load', default='', help='Full path to Discriminator mod
 parser.add_argument('--cuda', type=bool, default=True, help='enables cuda')
 parser.add_argument('--n_gpu', type=int, default=1, help='number of GPUs to use')
 parser.add_argument('--n_workers', type=int, default=2, help='Number of subprocess to use to load the data. Use at least 2 or the number of cpu cores - 1.')
+parser.add_argument('--weight_decay', type=float, default=0, help='L2 regularization weight. Greatly helps convergence but leads to artifacts in images, not recommended.')
 param = parser.parse_args()
 
 ## Imports
@@ -256,8 +257,8 @@ z_test = Variable(z_test)
 # Based on DCGAN paper, they found using betas[0]=.50 better.
 # betas[0] represent is the weight given to the previous mean of the gradient
 # betas[1] is the weight given to the previous variance of the gradient
-optimizerD = torch.optim.Adam(D.parameters(), lr=param.lr_D, betas=(param.beta1, 0.999))
-optimizerG = torch.optim.Adam(G.parameters(), lr=param.lr_G, betas=(param.beta1, 0.999))
+optimizerD = torch.optim.Adam(D.parameters(), lr=param.lr_D, betas=(param.beta1, 0.999), weight_decay=param.weight_decay)
+optimizerG = torch.optim.Adam(G.parameters(), lr=param.lr_G, betas=(param.beta1, 0.999), weight_decay=param.weight_decay)
 
 ## Fitting model
 for epoch in range(param.n_epoch):
