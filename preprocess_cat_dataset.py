@@ -94,9 +94,7 @@ def describePositive():
 		# Straighten and crop the cat face.
 		crop = preprocessCatFace(coords, image)
 		if crop is None:
-			print >> sys.stderr, \
-					'Failed to preprocess image at %s.' % \
-					imagePath
+			print(f'Failed to preprocess image at {imagePath}.', file=sys.stderr)
 			continue
 		# Save the crop to folders based on size
 		h, w, colors = crop.shape
