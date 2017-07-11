@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Reference 1 : https://github.com/pytorch/examples/blob/master/dcgan
 # Reference 2 : https://arxiv.org/pdf/1511.06434.pdf
 # To get TensorBoard output, use the python command: tensorboard --logdir /home/alexia/Output/DCGAN
@@ -39,15 +41,18 @@ start = time.time()
 # Check folder run-i for all i=0,1,... until it finds run-j which does not exists, then creates a new folder run-j
 import os
 run = 0
-while os.path.exists("%s/run-%d" % (param.output_folder, run)):
+base_dir = f"{param.output_folder}/run-{run}"
+while os.path.exists(base_dir):
 	run += 1
-os.mkdir("%s/run-%d" % (param.output_folder, run))
-os.mkdir("%s/run-%d/logs" % (param.output_folder, run))
-os.mkdir("%s/run-%d/images" % (param.output_folder, run))
-os.mkdir("%s/run-%d/models" % (param.output_folder, run))
+	base_dir = f"{param.output_folder}/run-{run}"
+os.mkdir(base_dir)
+logs_dir = f"{base_dir}/logs"
+os.mkdir(logs_dir)
+os.mkdir(f"{base_dir}/images")
+os.mkdir(f"{base_dir}/models")
 
 # where we save the output
-log_output = open("%s/run-%d/logs/log.txt" % (param.output_folder, run), 'w')
+log_output = open(f"{logs_dir}/log.txt", 'w')
 print(param)
 print(param, file=log_output)
 
@@ -57,7 +62,7 @@ from torch.autograd import Variable
 
 # For plotting the Loss of D and G using tensorboard
 from tensorboard_logger import configure, log_value
-configure("%s/run-%d/logs" % (param.output_folder, run), flush_secs=5)
+configure(logs_dir, flush_secs=5)
 
 import torchvision
 import torchvision.datasets as dset
