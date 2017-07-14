@@ -30,6 +30,7 @@ parser.add_argument('--D_load', default='', help='Full path to Discriminator mod
 parser.add_argument('--cuda', type=bool, default=True, help='enables cuda')
 parser.add_argument('--n_gpu', type=int, default=1, help='number of GPUs to use')
 parser.add_argument('--n_workers', type=int, default=2, help='Number of subprocess to use to load the data. Use at least two or the number of cpu cores - 1.')
+parser.add_argument('--gen_extra_images', type=int, default=0, help='Every 50 generator iterations, generate additional images with "batch_size" random fake cats.')
 param = parser.parse_args()
 
 ## Imports
@@ -267,9 +268,21 @@ optimizerG = torch.optim.RMSprop(G.parameters(), lr=param.lr_G)
 gen_iterations = 0
 for epoch in range(param.n_epoch):
 
+	# Fake images saved
+	if gen_iterations % 50 == 0:
+		fake_test = G(z_test)
+		vutils.save_image(fake_test.data, '%s/run-%d/images/fake_samples_iter%03d.png' % (param.output_folder, run, gen_iterations/50), normalize=True)
+		for ext in range(param.gen_extra_images):
+			z_extra = torch.FloatTensor(param.batch_size, param.z_size, 1, 1).normal_(0, 1)
+			if param.cuda:
+				z_extra = z_extra.cuda()
+			fake_test = G(Variable(z_extra))
+			vutils.save_image(fake_test.data, '%s/run-%d/images/fake_samples_iter%03d_extra%01d.png' % (param.output_folder, run, gen_iterations/50, ext), normalize=True)
+
 	# Setting up iterable
 	i = 0
 	data_iter = iter(dataset)
+
 
 	while i < len(dataset):
 
@@ -321,7 +334,7 @@ for epoch in range(param.n_epoch):
 			# Optimize
 			errD = (errD_real - errD_fake)
 			optimizerD.step()
-			
+
 
 			# Iterate up
 			t = t + 1
@@ -353,9 +366,6 @@ for epoch in range(param.n_epoch):
 			end = time.time()
 			print('[%d] W_distance: %.4f Loss_G: %.4f time:%.4f' % (gen_iterations, -errD.data[0], errG.data[0], end - start))
 			print('[%d] W_distance: %.4f Loss_G: %.4f time:%.4f' % (gen_iterations, -errD.data[0], errG.data[0], end - start), file=log_output)
-			# Fake images saved
-			fake_test = G(z_test)
-			vutils.save_image(fake_test.data, '%s/run-%d/images/fake_samples_iter%05d.png' % (param.output_folder, run, gen_iterations/50), normalize=True)
 		# Save models
 		if gen_iterations % 500 == 0:
 			torch.save(G.state_dict(), '%s/run-%d/models/G_%d.pth' % (param.output_folder, run, gen_iterations/50))

@@ -32,7 +32,7 @@ parser.add_argument('--G_load', default='', help='Full path to Generator model t
 parser.add_argument('--D_load', default='', help='Full path to Discriminator model to load (ex: /home/output_folder/run-5/models/D_epoch_11.pth)')
 parser.add_argument('--cuda', type=bool, default=True, help='enables cuda')
 parser.add_argument('--n_gpu', type=int, default=1, help='number of GPUs to use')
-
+parser.add_argument('--gen_extra_images', type=int, default=0, help='Every 50 generator iterations, generate additional images with "batch_size" random fake cats.')
 param = parser.parse_args()
 
 ## Imports
@@ -279,6 +279,17 @@ optimizerG = torch.optim.Adam(G.parameters(), lr=param.lr_G, betas=(param.beta1,
 ## Fitting model
 for i in range(param.n_iter):
 
+	# Fake images saved
+	if i % 50 == 0:
+		fake_test = G(z_test)
+		vutils.save_image(fake_test.data, '%s/run-%d/images/fake_samples_iter%03d.png' % (param.output_folder, run, i/50), normalize=True)
+		for ext in range(param.gen_extra_images):
+			z_extra = torch.FloatTensor(param.batch_size, param.z_size, 1, 1).normal_(0, 1)
+			if param.cuda:
+				z_extra = z_extra.cuda()
+			fake_test = G(Variable(z_extra))
+			vutils.save_image(fake_test.data, '%s/run-%d/images/fake_samples_iter%03d_extra%01d.png' % (param.output_folder, run, i/50, ext), normalize=True)
+
 	for p in D.parameters():
 		p.requires_grad = True
 
@@ -354,13 +365,10 @@ for i in range(param.n_iter):
 	log_value('errD_penalty', errD_penalty.data[0], i)
 	log_value('errG', errG.data[0], i)
 
-	if i % 5 == 0:
+	if i % 50 == 0:
 		print('[i=%d] W_distance: %.4f W_distance_penalty: %.4f Loss_G: %.4f' % (i, errD.data[0], errD_penalty.data[0], errG.data[0]))
 		print('[i=%d] W_distance: %.4f W_distance_penalty: %.4f Loss_G: %.4f' % (i, errD.data[0], errD_penalty.data[0], errG.data[0]), file=log_output)
-		# Fake images saved
-		fake_test = G(z_test)
-		vutils.save_image(fake_test.data, '%s/run-%d/images/fake_samples_iter%05d.png' % (param.output_folder, run, i), normalize=True)
 	# Save models
-	if i % 100 == 0:
+	if i % 500 == 0:
 		torch.save(G.state_dict(), '%s/run-%d/models/G_%d.pth' % (param.output_folder, run, i))
 		torch.save(D.state_dict(), '%s/run-%d/models/D_%d.pth' % (param.output_folder, run, i))

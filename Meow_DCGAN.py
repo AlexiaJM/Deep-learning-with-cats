@@ -28,6 +28,7 @@ parser.add_argument('--cuda', type=bool, default=True, help='enables cuda')
 parser.add_argument('--n_gpu', type=int, default=1, help='number of GPUs to use')
 parser.add_argument('--n_workers', type=int, default=2, help='Number of subprocess to use to load the data. Use at least 2 or the number of cpu cores - 1.')
 parser.add_argument('--weight_decay', type=float, default=0, help='L2 regularization weight. Greatly helps convergence but leads to artifacts in images, not recommended.')
+parser.add_argument('--gen_extra_images', type=int, default=0, help='Every epoch, generate additional images with "batch_size" random fake cats.')
 param = parser.parse_args()
 
 ## Imports
@@ -264,6 +265,17 @@ optimizerG = torch.optim.Adam(G.parameters(), lr=param.lr_G, betas=(param.beta1,
 
 ## Fitting model
 for epoch in range(param.n_epoch):
+
+	# Fake images saved
+	fake_test = G(z_test)
+	vutils.save_image(fake_test.data, '%s/run-%d/images/fake_samples_epoch%03d.png' % (param.output_folder, run, epoch), normalize=True)
+	for ext in range(param.gen_extra_images):
+		z_extra = torch.FloatTensor(param.batch_size, param.z_size, 1, 1).normal_(0, 1)
+		if param.cuda:
+			z_extra = z_extra.cuda()
+		fake_test = G(Variable(z_extra))
+		vutils.save_image(fake_test.data, '%s/run-%d/images/fake_samples_epoch%03d_extra%01d.png' % (param.output_folder, run, epoch, ext), normalize=True)
+
 	for i, data_batch in enumerate(dataset, 0):
 		########################
 		# (1) Update D network #
@@ -330,10 +342,6 @@ for epoch in range(param.n_epoch):
 			s = fmt % (epoch, param.n_epoch, i, len(dataset), errD.data[0], errG.data[0], D_real, D_fake, D_G, end - start)
 			print(s)
 			print(s, file=log_output)
-	# Fake images saved
-	fake_test = G(z_test)
-	vutils.save_image(fake_test.data, '%s/run-%d/images/fake_samples_epoch%03d.png' % (param.output_folder, run, epoch), normalize=True)
-
 	# Save every epoch
 	fmt = '%s/run-%d/models/%s_epoch_%d.pth'
 	if epoch % 25 == 0:
