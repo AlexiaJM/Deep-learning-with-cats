@@ -52,6 +52,8 @@ logs_dir = f"{base_dir}/logs"
 os.mkdir(logs_dir)
 os.mkdir(f"{base_dir}/images")
 os.mkdir(f"{base_dir}/models")
+if param.gen_extra_images > 0:
+	os.mkdir(f"{base_dir}/images/extra")
 
 # where we save the output
 log_output = open(f"{logs_dir}/log.txt", 'w')
@@ -272,7 +274,7 @@ for epoch in range(param.n_epoch):
 		if param.cuda:
 			z_extra = z_extra.cuda()
 		fake_test = G(Variable(z_extra))
-		vutils.save_image(fake_test.data, '%s/run-%d/images/fake_samples_epoch%03d_extra%01d.png' % (param.output_folder, run, epoch, ext), normalize=True)
+		vutils.save_image(fake_test.data, '%s/run-%d/images/extra/fake_samples_epoch%03d_extra%01d.png' % (param.output_folder, run, epoch, ext), normalize=True)
 
 	for i, data_batch in enumerate(dataset, 0):
 		########################

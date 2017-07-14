@@ -54,6 +54,8 @@ logs_dir = f"{base_dir}/logs"
 os.mkdir(logs_dir)
 os.mkdir(f"{base_dir}/images")
 os.mkdir(f"{base_dir}/models")
+if param.gen_extra_images > 0:
+	os.mkdir(f"{base_dir}/images/extra")
 
 # where we save the output
 log_output = open(f"{logs_dir}/log.txt", 'w')
@@ -288,7 +290,7 @@ for i in range(param.n_iter):
 			if param.cuda:
 				z_extra = z_extra.cuda()
 			fake_test = G(Variable(z_extra))
-			vutils.save_image(fake_test.data, '%s/run-%d/images/fake_samples_iter%03d_extra%01d.png' % (param.output_folder, run, i/50, ext), normalize=True)
+			vutils.save_image(fake_test.data, '%s/run-%d/images/extra/fake_samples_iter%03d_extra%01d.png' % (param.output_folder, run, i/50, ext), normalize=True)
 
 	for p in D.parameters():
 		p.requires_grad = True
