@@ -2,6 +2,8 @@
 
 This repository is a "toy" project so I can gain experience building deep neural networks. My first goal is learning to generate pictures of cats with Generative Adversarial Networks (^._.^). 
 
+**Update** Many people were concerned about whether the generated images are really novel or rather just copies of the training dataset so I made a python function that output the 5 most similar training (real) images to the given generated (fake) images. See: https://github.com/AlexiaJM/Generative-model-most-similar-images.
+
 ![](/images/DCGAN_220epochs.gif)
 
 **Objectives (so far)**
