@@ -2,9 +2,11 @@
 
 This repository is a "toy" project so I can gain experience building deep neural networks. My first goal is learning to generate pictures of cats with Generative Adversarial Networks (^._.^). 
 
-**Update** Many people were concerned about whether the generated images are really novel or rather just copies of the training dataset so I made a python function that output the 5 most similar training (real) images to the given generated (fake) images. See: https://github.com/AlexiaJM/Generative-model-most-similar-images.
-
 ![](/images/DCGAN_220epochs.gif)
+
+**Updates** 
+  * 17/07/2017 : Added CycleGAN for style transfer, so far doesn't work well with the CAT dataset and it's so slow (20-24h to fully train it) that optimizing it is very difficult. I'm leaving it here for those interested but I probably will try fast neural style instead.
+  * 15/07/2017 : Many people were concerned about whether the generated images are really novel or rather just copies of the training dataset so I made a python function that output the 5 most similar training (real) images to the given generated (fake) images. See: https://github.com/AlexiaJM/Generative-model-most-similar-images.
 
 **Objectives (so far)**
 * Generate images of cats using various types of Generative Adversarial Networks (GAN)
@@ -13,7 +15,9 @@ This repository is a "toy" project so I can gain experience building deep neural
   * use **WGAN-GP** (Done)
   * use **LSGAN** (Done)
   * use **BEGAN**
-* Transform real cats into art pieces using **CycleGAN**
+* Transform real cats into art pieces 
+  * use **CycleGAN** (Code done)
+  * use **Fast neural style**
 * Various/Others
   * Preprocess cat images so we get aligned cat faces for much better GAN convergence (Done)
   * Separate cats by size to be better able to generate cats of certain sizes (Done)
@@ -23,17 +27,17 @@ This repository is a "toy" project so I can gain experience building deep neural
   * Add multi-gpu and non-CUDA option (Done)
   * Option to load previous models (Done)
   * Add log to output (Done)
-  * Dropouts in G
   * L2 Regularization (Done)
   * Try making higher resolutions pictures
     * 128 x 128 (Done)
-    * 256 x 256 
+    * 256 x 256 (Need more higher res data to do this)
   * Try Self-Normalizing Neural Networks (SELU) as per https://arxiv.org/abs/1706.02515 (Done)
+  * Add option to generate more cat pictures (Done)
+  * Add option to see the 5 nearest real cats images and thus be able to tell if the generated cats are really unique (Done)
+  * Dropouts in G
   * Try adding Frechet Inception Distance (FID) as per https://arxiv.org/pdf/1706.08500.pdf
   * Try soft and noisy labels as per https://github.com/soumith/ganhacks
   * Try adding decaying noise to input as per https://github.com/soumith/ganhacks
-  * Add option to generate more cat pictures
-  * Add option to see the 5 nearest real cats images and thus be able to tell if the generated cats are really unique
   
 **Needed**
 
