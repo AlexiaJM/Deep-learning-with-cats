@@ -38,15 +38,15 @@ $ # Move to your favorite place
 $ mv cats_bigger_than_64x64 "your_input_folder_64x64"
 $ mv cats_bigger_than_128x128 "your_input_folder_128x128"
 $ # Generate 64x64 cats using DCGAN
-$ python Meow_DCGAN.py --input_folder "your_input_folder_64x64" --output_folder "your_output_folder"
+$ python DCGAN.py --input_folder "your_input_folder_64x64" --output_folder "your_output_folder"
 $ # Generate 128x128 cats using DCGAN
-$ python Meow_DCGAN.py --input_folder="your_input_folder_128x128" --image_size 128 --G_h_size 64 --D_h_size 64 --SELU True
+$ python DCGAN.py --input_folder="your_input_folder_128x128" --image_size 128 --G_h_size 64 --D_h_size 64 --SELU True
 $ # Generate 64x64 cats using WGAN
-$ python Meow_WGAN.py --input_folder "your_input_folder_64x64" --output_folder "your_output_folder"
+$ python WGAN.py --input_folder "your_input_folder_64x64" --output_folder "your_output_folder"
 $ # Generate 64x64 cats using WGAN-GP
-$ python Meow_WGAN-GP.py --input_folder "your_input_folder_64x64" --output_folder "your_output_folder" --SELU True
+$ python WGAN-GP.py --input_folder "your_input_folder_64x64" --output_folder "your_output_folder" --SELU True
 $ # Generate 64x64 cats using LSGAN (Least Squares GAN)
-$ python Meow_LSGAN.py --input_folder "your_input_folder_64x64" --output_folder "your_output_folder"
+$ python LSGAN.py --input_folder "your_input_folder_64x64" --output_folder "your_output_folder"
 ```
 **To see TensorBoard plots of the losses**
 ```bash
