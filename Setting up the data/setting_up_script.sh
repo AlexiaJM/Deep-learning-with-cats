@@ -3,9 +3,9 @@
 #pip install opencv-python
 
 ## Download CAT dataset
-wget -nc https://web.archive.org/web/20150703060412/http://137.189.35.203/WebUI/CatDatabase/Data/CAT_DATASET_01.zip
-wget -nc https://web.archive.org/web/20150703060412/http://137.189.35.203/WebUI/CatDatabase/Data/CAT_DATASET_02.zip
-wget -nc https://web.archive.org/web/20150703060412/http://137.189.35.203/WebUI/CatDatabase/Data/00000003_015.jpg.cat
+wget -nc https://archive.org/download/CAT_DATASET/CAT_DATASET_01.zip
+wget -nc https://archive.org/download/CAT_DATASET/CAT_DATASET_02.zip
+wget -nc https://archive.org/download/CAT_DATASET/00000003_015.jpg.cat
 
 ## Setting up folder
 unzip CAT_DATASET_01.zip -d cat_dataset
