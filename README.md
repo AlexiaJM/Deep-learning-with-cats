@@ -4,11 +4,7 @@ This repository is a "toy" project so I can gain experience building deep neural
 
 ![](/images/DCGAN_220epochs.gif)
 
-**Updates** 
-  * 17/07/2017 : Added CycleGAN for style transfer, so far doesn't work well with the CAT dataset and it's so slow (20-24h to fully train it). I'm leaving it here for those interested but I probably will try fast neural style instead.
-  * 15/07/2017 : Many people were concerned about whether the generated images are really novel or rather just copies of the training dataset so I made a python function that output the 5 most similar training (real) images to the given generated (fake) images. See: https://github.com/AlexiaJM/Generative-model-most-similar-images.
-
-**Objectives (so far)**
+**Objectives**
 * Generate images of cats using various types of Generative Adversarial Networks (GAN)
   * use **DCGAN** (Done)
   * use **WGAN** (Done)
@@ -16,8 +12,8 @@ This repository is a "toy" project so I can gain experience building deep neural
   * use **LSGAN** (Done)
   * use **BEGAN**
 * Transform real cats into art pieces 
-  * use **CycleGAN** (Code done)
-  * use **Fast neural style** (Almost ready)
+  * use **CycleGAN**
+  * use **Fast neural style** (Done)
 * Various/Others
   * Try adding Frechet Inception Distance (FID) as per https://arxiv.org/pdf/1706.08500.pdf
   * Try soft and noisy labels as per https://github.com/soumith/ganhacks
@@ -48,6 +44,7 @@ $ python WGAN-GP.py --input_folder "your_input_folder_64x64" --output_folder "yo
 $ # Generate 64x64 cats using LSGAN (Least Squares GAN)
 $ python LSGAN.py --input_folder "your_input_folder_64x64" --output_folder "your_output_folder"
 ```
+
 **To see TensorBoard plots of the losses**
 ```bash
 $ tensorboard --logdir "your_input_folder"
@@ -72,3 +69,13 @@ $ tensorboard --logdir "your_input_folder"
 **WGAN-GP 64x64 with SELU**
 
 ![](/images/WGAN_GP_iter15195.png)
+
+**Fast style transfer**
+
+![](/images/cat_style1.jpg)
+![](/images/cat_style2.jpg)
+![](/images/cat_style3.jpg)
+![](/images/cat_style4.jpg)
+![](/images/cat_style5.jpg)
+
+![](/images/true_art.jpg)
