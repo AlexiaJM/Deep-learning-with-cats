@@ -22,7 +22,7 @@ This repository is a "toy" project so I can gain experience building deep neural
 **Needed**
 
 * Python 3.6, PyTorch, Tensorflow (for TensorBoard)
-* Cat Dataset (https://web.archive.org/web/20150703060412/http://137.189.35.203/WebUI/CatDatabase/catData.html)
+* Cat Dataset (https://web.archive.org/web/20150703060412/http://137.189.35.203/WebUI/CatDatabase/catData.html or http://academictorrents.com/details/c501571c29d16d7f41d159d699d0e7fb37092cbd)
 * TensorBoard logger (https://github.com/TeamHG-Memex/tensorboard_logger)
 
 **To run**
