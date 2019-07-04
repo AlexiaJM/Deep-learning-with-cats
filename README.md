@@ -2,9 +2,8 @@
 
 This repository is a "toy" project so I can gain experience building deep neural networks. My first goal is generating pictures of cats using Generative Adversarial Networks. My second goal is making art with cats by applying styles to pictures of cats using deep convolutional neural networks. (^._.^)
 
+**Update (2019/03/02): This contains a even more recent version of the code with even more features: https://github.com/AlexiaJM/relativistic-f-divergences
 **Update (2018/11/02): See https://github.com/AlexiaJM/RelativisticGAN for a greatly enhanced version of the GAN codes, that incorporate all loss functions into a single file. It also includes additional better relativistic loss functions and many extra features (ex: Spectral normalization, Hinge Loss, Gradient penalty with any GAN loss, generate pictures every X iteration, learning rate decay, etc.). It still works by default to generate cats but it can also do CIFAR-10.**
-**2019/03/02: This contains a even more recent version of the code with even more features: https://github.com/AlexiaJM/relativistic-f-divergences
-
 
 ![](/images/DCGAN_220epochs.gif)
 
